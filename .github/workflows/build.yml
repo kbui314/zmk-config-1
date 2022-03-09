@@ -45,28 +45,14 @@ jobs:
         id: west-zephyr-export
         with:
           args: 'zephyr-export'
-      - name: West Build (Manuform Central)
-        uses: 'docker://zmkfirmware/zephyr-west-action-arm:latest'
-        id: west-build-manuform-central
-        with:
-          args: 'build "-s zmk/app -b nrfmicro_13 -- -DSHIELD=manuform_central -DZMK_CONFIG=/github/workspace/config"'
-      - name: Manuform DTS File
-        if: ${{ always() }}
-        run: cat -n build/zephyr/nrfmicro_13.dts.pre.tmp
-      - name: Manuform Central Kconfig file
-        run: cat build/zephyr/.config | grep -v "^#" | grep -v "^$"
-      - name: Rename zmk.uf2
-        run: cp build/zephyr/zmk.uf2 manuform_central_nrfmicro_13.uf2
-      - name: Archive (Manuform Central)
-        uses: actions/upload-artifact@v2
-        with:
-          name: manuform
-          path: manuform_central_nrfmicro_13.uf2
       - name: West Build (Manuform Left)
         uses: 'docker://zmkfirmware/zephyr-west-action-arm:latest'
         id: west-build-manuform-left
         with:
-          args: 'build "--pristine -s zmk/app -b nrfmicro_13 -- -DSHIELD=manuform_left -DZMK_CONFIG=/github/workspace/config"'
+          args: 'build "-s zmk/app -b nrfmicro_13 -- -DSHIELD=manuform_left -DZMK_CONFIG=/github/workspace/config"'
+      - name: Manuform DTS File
+        if: ${{ always() }}
+        run: cat -n build/zephyr/nrfmicro_13.dts.pre.tmp
       - name: Manuform Left Kconfig file
         run: cat build/zephyr/.config | grep -v "^#" | grep -v "^$"
       - name: Rename zmk.uf2
